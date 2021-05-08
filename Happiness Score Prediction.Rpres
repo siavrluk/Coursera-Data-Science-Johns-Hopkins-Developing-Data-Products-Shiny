@@ -1,0 +1,89 @@
+Happiness Score Prediction
+========================================================
+author: Silvana Avramska-Lukarska 
+date: May 7, 2021
+autosize: true
+class: smaller
+transition: rotate
+css: style.css
+
+[Developing Data Products](https://www.coursera.org/learn/data-products) <br>
+[Coursera Data Science Specialization](https://www.coursera.org/specializations/data-science-statistics-machine-learning)<br>
+[Johns Hopkins University Data Science Lab](https://jhudatascience.org)
+
+========================================================
+# **Overview**
+
+
+As part of the *Developing Data Products* course from the *JHU Data Science: Statistics and Machine Learning Specialization*, we built a Shiny App which aims at predicting the Happiness Score around the world. 
+
+We used the World Happiness Report which is a landmark survey of the state of global happiness. The happiness scores and rankings use data from the Gallup World Poll.
+
+In order to get a prediction for the happiness score, we built two very simple regression models. The first one uses just the **Life expectancy** as a predictor, and the second one -- **Life expectancy** and **Region**.
+
+========================================================
+# **App Preview**
+
+
+```{r, echo=FALSE}
+   knitr::include_graphics("appPreview.png")
+```
+
+***
+<br>
+<br>
+<br>
+
+
+In order to use the app, one has to choose the 
+- **Life expectancy** (required for both Model1 and Model2) and 
+- **Region** (required only for Model2). 
+
+The fitted line from Model1 is depicted in <span style="color:red">red</span>, and the fitted line from Model2 is in <span style="color:blue">blue</span>. The <span style="color:red">red</span> and <span style="color:blue">blue</span> dots correspond to the predictions for the selected **Life expectancy** and **Region** values obtain by Model1 and Model2, resp.
+
+By using the checkboxes in the left panel, one can show or hide the results from Model1 and/or Model2.
+
+========================================================
+# **Modeling**
+The application consists of the following two files:
+
+- **ui.R** containing the user interface code
+- **server.R** containing the back-end code. 
+
+The 2 models are fitted in the **server.R** by using the following code:
+
+```{r, echo = FALSE}
+data <- read.csv("Hapiness Score Prediction/world-happiness-report-2021.csv")
+data$Regional.indicator <- as.factor(data$Regional.indicator)
+```
+
+```{r}
+model1 <- lm(Ladder.score ~ Healthy.life.expectancy, data = data)
+model2 <- lm(Ladder.score ~ Healthy.life.expectancy + Regional.indicator, data = data)
+
+predict(model1, newdata = data.frame("Healthy.life.expectancy" = 82))
+predict(model2, newdata = data.frame("Healthy.life.expectancy" = 82, "Regional.indicator" = "Western Europe"))
+
+```
+
+========================================================
+# **Models Output**
+
+```{r}
+plot(data$Healthy.life.expectancy, data$Ladder.score,
+             xlab = "Life Expectancy", ylab = "Happiness Score", col = data$Regional.indicator)
+abline(model1, col = "red", lwd = 2)
+abline(model2, col = "blue", lwd = 2)
+
+legend("topleft", c("Model1 Prediction", "Model2 Prediction"), pch = 16, col = c("red", "blue"))
+        legend("bottomright", legend=levels(data$Regional.indicator), pch = 1, col = 1:nlevels(data$Regional.indicator), cex = 0.7)
+```
+
+
+========================================================
+# **Resources**
+- Shiny App:  https://siavrluk.shinyapps.io/HapinessScorePrediction/
+- Source code: https://github.com/siavrluk/Coursera-Data-Science-Johns-Hopkins-Developing-Data-Products-Shiny
+- Data: https://www.kaggle.com/ajaypalsinghlo/world-happiness-report-2021
+
+
