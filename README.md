@@ -13,3 +13,6 @@ In order to use the app, one has to choose the
 The fitted line from Model1 is depicted in <span style="color:red">red</span>, and the fitted line from Model2 is in <span style="color:blue">blue</span>. The <span style="color:red">red</span> and <span style="color:blue">blue</span> dots correspond to the predictions for the selected **Life expectancy** and **Region** values obtain by Model1 and Model2, resp.
 
 By using the checkboxes in the left panel, one can show or hide the results from Model1 and/or Model2.
+
+
+The app can be found at https://siavrluk.shinyapps.io/HapinessScorePrediction/
